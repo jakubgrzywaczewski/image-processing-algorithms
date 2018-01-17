@@ -2,32 +2,22 @@ const CANVAS = document.querySelector('#main-canvas');
 const CANVAS_CTX = CANVAS.getContext('2d');
 const LOADED_FILE = document.querySelector('#load-file');
 
-LOADED_FILE.addEventListener('change', (e) => {
+LOADED_FILE.addEventListener('change', () => {
 	let path = document.querySelector('.file-path');
 	path.placeholder = LOADED_FILE.files[0].name;
-	LoadImage(LOADED_FILE.files[0]);
-});
+	CreateImage(LOADED_FILE.files[0]);
+}, false);
 
-function LoadImage(file) {
+function CreateImage(file) {
 	let reader = new FileReader();
-	reader.addEventListener("load", () => {
-		if (file) {
-			console.log(file);
-			renderImage
-		}
-	});
-}
-
-function renderImage() {
 	let image = new Image();
-
+	let url = URL.createObjectURL(file);
 	image.onload = function () {
-		CANVAS_CTX.drawImage(image, 0, 0);
-		CANVAS_CTX.fillStyle = "rgba(200, 0, 0, 0.5)";
-		CANVAS_CTX.fillRect(0, 0, 500, 500);
+		CANVAS_CTX.drawImage(image, 0, 0, image.width, image.height, 0, 0, CANVAS.width, CANVAS.height);
+		CANVAS_CTX.fillStyle = "rgba(200, 0, 0, 0)";
+		CANVAS_CTX.fillRect(0, 0, CANVAS.width, CANVAS.height);
 	};
-
-	image.src = `${event.src}`;
+	image.src = url;
 }
 
 function getPixel(url, x, y) {
