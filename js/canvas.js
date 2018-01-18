@@ -1,12 +1,24 @@
 const CANVAS = document.querySelector('#main-canvas');
 const CANVAS_CTX = CANVAS.getContext('2d');
 const LOADED_FILE = document.querySelector('#load-file');
+const BUTTON_MAIN_ALGORITHM = document.querySelector('#use-reverse-algorithm');
 
 LOADED_FILE.addEventListener('change', () => {
 	let path = document.querySelector('.file-path');
 	path.placeholder = LOADED_FILE.files[0].name;
 	createCanvasImage(LOADED_FILE.files[0]);
 }, false);
+
+BUTTON_MAIN_ALGORITHM.addEventListener('click', () => {
+	let imageData = CANVAS_CTX.getImageData(0, 0, CANVAS.width, CANVAS.height);
+	for (i = 0; i < imageData.data.length; i += 4) {
+        imageData.data[i] = 255 - imageData.data[i];
+        imageData.data[i+1] = 255 - imageData.data[i+1];
+        imageData.data[i+2] = 255 - imageData.data[i+2];
+        imageData.data[i+3] = 255;
+    }
+    CANVAS_CTX.putImageData(imageData, 0, 0);
+});
 
 function loadImage(url) {
 	return new Promise(resolve => { 
@@ -38,15 +50,3 @@ async function createCanvasImage(file) {
 	image.src = url;
 	correctCanvasSizes(image);
 }
-
-function getPixel(url, x, y) {
-	var img = new Image();
-	img.src = url;
-	var canvas = document.createElement('canvas');
-	var context = canvas.getContext('2d');
-	context.drawImage(img, 0, 0);
-	return context.getImageData(x, y, 1, 1).data;
-}
-
-
-//getPixel('./bg.png', 10, 10); // [255, 255, 255, 0];
