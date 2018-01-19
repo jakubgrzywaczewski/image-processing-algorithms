@@ -1,11 +1,14 @@
 {
-  "name": "floyd-steinberg-algorithm",
-  "version": "1.0.0",
-  "description": "This is an implementation of Floyd-Steinberg Algorithm.",
-  "main": "canvas.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Jakub Grzywaczewski",
-  "license": "MIT"
+	"name": "floyd-steinberg-algorithm",
+	"version": "1.0.0",
+	"description": "This is an implementation of Floyd-Steinberg Algorithm.",
+	"main": "canvas.js",
+	"scripts": {
+		"start": "node server.js"
+	},
+	"author": "Jakub Grzywaczewski",
+	"license": "MIT",
+	"dependencies": {
+		"express": "^4.16.2"
+	}
 }
