@@ -2,13 +2,25 @@
 	"name": "floyd-steinberg-algorithm",
 	"version": "1.0.0",
 	"description": "This is an implementation of Floyd-Steinberg Algorithm.",
-	"main": "canvas.js",
+	"engines": {
+		"node": "8.9.1"
+	},
+	"main": "server.js",
 	"scripts": {
 		"start": "node server.js"
 	},
 	"author": "Jakub Grzywaczewski",
-	"license": "MIT",
 	"dependencies": {
 		"express": "^4.16.2"
-	}
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/enk1/floyd-steinberg-algorithm-js"
+	},
+	"keywords": [
+		"Floyd-Steinberg",
+		"greyscale",
+		"reverse pixels"
+	],
+	"license": "MIT"
 }
