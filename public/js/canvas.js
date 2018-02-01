@@ -80,11 +80,6 @@
 	function correctCanvasSizes(image) {
 		CANVAS.width = image.width;
 		CANVAS.height = image.height;
-		if (image.width > 1300) {
-			let body = document.querySelector('body');
-			body.innerHTML = "";
-			body.innerHTML = "<h1 style='display:block; margin: 100px auto;'>Zbyt duży obrazek.<br> Maksymalny rozmiar obrazka to 1300px</h1>";
-		}
 	}
 
 	async function createCanvasImage(file) {
