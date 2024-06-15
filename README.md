@@ -1,9 +1,9 @@
 # floyd-steinberg-algorithm-js
 
-Web app which has implemented simple graphical algorithms. At this moment:
+A web app that has implemented simple graphical algorithms. At this moment:
 
 1. Floyd-Steinberg algorithm
-2. Greyscale algorithm
+2. Grayscale algorithm
 3. Reverse pixels
 
 ## Running Locally
@@ -19,6 +19,4 @@ $ npm start
 
 Your app should now be running on [localhost:3000](http://localhost:3000/).
 
-## Live demo
-
-Heroku: https://floyd-steinberg-algorithm-js.herokuapp.com/
+## Live Demo
