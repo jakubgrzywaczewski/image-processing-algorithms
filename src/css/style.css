@@ -1,0 +1,14 @@
+.wrapper {
+  margin: 10px auto;
+}
+canvas {
+  display: block;
+  margin: 10px 0;
+  border: 1px solid gray;
+
+  width: 100%;
+  height: auto;
+}
+nav {
+  padding: 5px;
+}

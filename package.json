@@ -1,26 +1,44 @@
 {
-	"name": "floyd-steinberg-algorithm",
-	"version": "1.0.0",
-	"description": "This is an implementation of Floyd-Steinberg Algorithm.",
-	"engines": {
-		"node": "8.9.1"
-	},
-	"main": "server.js",
-	"scripts": {
-		"start": "node server.js"
-	},
-	"author": "Jakub Grzywaczewski",
-	"dependencies": {
-		"express": "^4.16.2"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/enk1/floyd-steinberg-algorithm-js"
-	},
-	"keywords": [
-		"Floyd-Steinberg",
-		"greyscale",
-		"reverse pixels"
-	],
-	"license": "MIT"
+  "name": "floyd-steinberg-algorithm-js",
+  "version": "2.0.0",
+  "description": "This is an implementation of Floyd-Steinberg Algorithm.",
+  "packageManager": "yarn@4.3.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "clean": "rimraf dist",
+    "type-check": "tsc --project ./tsconfig.json --noEmit --skipLibCheck",
+    "lint": "eslint --cache ."
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.5.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^7.13.0",
+    "@typescript-eslint/parser": "^7.13.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "eslint": "^9.5.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-react": "^7.34.2",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-refresh": "^0.4.7",
+    "prettier": "^3.3.2",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.13.0",
+    "vite": "^5.3.1"
+  },
+  "keywords": [
+    "Floyd-Steinberg",
+    "grayscale",
+    "reverse pixels"
+  ],
+  "author": "Jakub Grzywaczewski",
+  "license": "MIT"
 }
