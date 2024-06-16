@@ -28,5 +28,10 @@ export const ImageUploader = ({ setImageData }: ImageUploaderProps) => {
     }
   };
 
-  return <input type="file" accept="image/*" onChange={handleImageUpload} />;
+  return (
+    <>
+      <label htmlFor="load-file">Load Image</label>
+      <input id="load-file" type="file" accept="image/*" onChange={handleImageUpload} />
+    </>
+  );
 };
