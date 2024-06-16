@@ -1,4 +1,5 @@
 import React from 'react';
+import './ImageUploader.css';
 
 type ImageUploaderProps = {
   setImageData: (data: ImageData) => void;
@@ -28,5 +29,9 @@ export const ImageUploader = ({ setImageData }: ImageUploaderProps) => {
     }
   };
 
-  return <input type="file" accept="image/*" onChange={handleImageUpload} />;
+  return (
+    <div>
+      <input id="load-file" type="file" accept="image/*" onChange={handleImageUpload} />
+    </div>
+  );
 };

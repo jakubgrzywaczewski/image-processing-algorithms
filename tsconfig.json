@@ -1,18 +1,23 @@
 {
   "compilerOptions": {
+    "target": "es2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "esnext",
+    "skipLibCheck": true,
+
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
     "declaration": true,
     "esModuleInterop": true,
     "isolatedModules": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "noEmit": true,
-    "noUncheckedIndexedAccess": true,
     "outDir": "dist",
-    "skipLibCheck": true,
-    "strict": true,
-    "target": "es2020",
+    "noEmit": true,
     "verbatimModuleSyntax": true,
-    "jsx": "react"
+
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true
   },
   "include": ["src"],
   "exclude": ["dist"]
