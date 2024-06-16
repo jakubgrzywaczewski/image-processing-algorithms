@@ -40,5 +40,6 @@
     "reverse pixels"
   ],
   "author": "Jakub Grzywaczewski",
-  "license": "MIT"
+  "license": "MIT",
+  "homepage": "https://github.com/jakubgrzywaczewski/floyd-steinberg-algorithm-js"
 }
