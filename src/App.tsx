@@ -4,7 +4,9 @@ import './App.css';
 import Canvas from './components/Canvas';
 import { ImageUploader } from './components/ImageUploader';
 import { Button } from './components/Button';
-import { applyGrayscaleAlgorithm, applyMainAlgorithm, applyReverseAlgorithm } from './helpers';
+import { applyReverseAlgorithm } from './algorithms/helpers';
+import { applyFloydSteinbergDithering } from './algorithms/floyd-steinberg-dithering';
+import { applyGrayscaleAlgorithm } from './algorithms/gray-scale';
 
 function App() {
   const [imageData, setImageData] = useState<ImageData | null>(null);
@@ -25,14 +27,19 @@ function App() {
 
   return (
     <main>
+      <h1>Floyd-Steinberg algorithm</h1>
       <Canvas setCanvasContext={setCanvasContext} imageData={imageData} />
       <nav>
         <ImageUploader setImageData={handleImageUpload} />
         {canvasContext && imageData && (
           <>
-            <Button onClick={() => applyMainAlgorithm(canvasContext)}>Use Main Algorithm</Button>
-            <Button onClick={() => applyGrayscaleAlgorithm(canvasContext)}>Use Grayscale Algorithm</Button>
-            <Button onClick={() => applyReverseAlgorithm(canvasContext)}>Use Reverse Algorithm</Button>
+            <Button onClick={() => applyFloydSteinbergDithering(canvasContext)}>
+              Floyd-Steinberg Dithering
+            </Button>
+            <Button onClick={() => applyGrayscaleAlgorithm(canvasContext)}>
+              Grayscale Algorithm
+            </Button>
+            <Button onClick={() => applyReverseAlgorithm(canvasContext)}>Reverse Algorithm</Button>
             <Button onClick={restoreOriginal}>Restore Original</Button>
           </>
         )}

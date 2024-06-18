@@ -17,7 +17,15 @@ export default tseslint.config(
   ...tseslint.configs.stylistic,
   prettierConfig,
   {
-    ignores: ['dist', 'node_modules', '*.config.mjs', '*.config.js', '*.cjs', '.yarn'],
+    ignores: [
+      'dist',
+      'node_modules',
+      'coverage',
+      '*.config.mjs',
+      '*.config.ts',
+      '*.cjs',
+      'setupTests.ts',
+    ],
   },
   {
     rules: {
