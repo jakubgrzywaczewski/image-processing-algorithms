@@ -6,7 +6,11 @@ type CanvasProps = {
   imageData: ImageData | null;
 };
 
-async function calculateScaledDimensions(imageBitmap: ImageBitmap, maxWidth: number, maxHeight: number) {
+async function calculateScaledDimensions(
+  imageBitmap: ImageBitmap,
+  maxWidth: number,
+  maxHeight: number,
+) {
   const naturalWidth = imageBitmap.width;
   const naturalHeight = imageBitmap.height;
   const widthRatio = maxWidth / naturalWidth;
@@ -29,7 +33,11 @@ const Canvas = ({ setCanvasContext, imageData }: CanvasProps) => {
           const imageBitmap = await createImageBitmap(imageData);
           const maxWidth = window.innerWidth;
           const maxHeight = window.innerHeight * 0.8;
-          const { newWidth, newHeight } = await calculateScaledDimensions(imageBitmap, maxWidth, maxHeight);
+          const { newWidth, newHeight } = await calculateScaledDimensions(
+            imageBitmap,
+            maxWidth,
+            maxHeight,
+          );
 
           canvasRef.current.width = newWidth;
           canvasRef.current.height = newHeight;
