@@ -1,15 +1,19 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-   test: {
+  test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./setupTests.ts'],
+    setupFiles: './setupTests.ts',
     deps: {
-      inline: ['vitest-canvas-mock'],
+      optimizer: {
+        web: {
+          include: ['vitest-canvas-mock'],
+        },
+      },
     },
     environmentOptions: {
       jsdom: {
@@ -17,5 +21,5 @@ export default defineConfig({
       },
     },
   },
-  base: '/floyd-steinberg-algorithm-js/'
+  base: '/floyd-steinberg-algorithm-js/',
 });
