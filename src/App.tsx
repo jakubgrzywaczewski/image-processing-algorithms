@@ -4,9 +4,10 @@ import './App.css';
 import Canvas from './components/Canvas';
 import { ImageUploader } from './components/ImageUploader';
 import { Button } from './components/Button';
-import { applyReverseAlgorithm } from './algorithms/helpers';
+
 import { applyFloydSteinbergDithering } from './algorithms/floyd-steinberg-dithering';
 import { applyGrayscaleAlgorithm } from './algorithms/gray-scale';
+import { applyReverseAlgorithm } from './algorithms/reverse-pixels-algorithm';
 
 function App() {
   const [imageData, setImageData] = useState<ImageData | null>(null);
