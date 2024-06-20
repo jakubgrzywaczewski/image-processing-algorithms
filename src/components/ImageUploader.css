@@ -1,4 +1,21 @@
 div {
   display: flex;
   flex-direction: column;
+
+  input::file-selector-button {
+    padding: 1rem;
+    border: 3px solid #273535;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 2em 20px 2.5em 0.2in;
+    transition: 250ms ease-in-out;
+    width: 200px;
+    background-color: transparent;
+
+    &:hover {
+      cursor: pointer;
+      background-color: #273535;
+      color: #dfd7ce;
+    }
+  }
 }
