@@ -27,11 +27,15 @@ function App() {
   };
 
   return (
-    <main>
-      <h1>Floyd-Steinberg algorithm</h1>
-      <Canvas setCanvasContext={setCanvasContext} imageData={imageData} />
-      <nav>
+    <div className="wrapper">
+      <header>
+        <h1>Image Processing Algorithms</h1>
+      </header>
+      <main>
+        <Canvas setCanvasContext={setCanvasContext} imageData={imageData} />
         <ImageUploader setImageData={handleImageUpload} />
+      </main>
+      <nav>
         {canvasContext && imageData && (
           <>
             <Button onClick={() => applyFloydSteinbergDithering(canvasContext)}>
@@ -45,7 +49,7 @@ function App() {
           </>
         )}
       </nav>
-    </main>
+    </div>
   );
 }
 

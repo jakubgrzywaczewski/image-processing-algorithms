@@ -1,0 +1,14 @@
+button {
+  padding: 1rem;
+  border: 3px solid #273535;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 2em 20px 2.5em 0.2in;
+  transition: 250ms ease-in-out;
+
+  &:hover {
+    background-color: #273535;
+    color: #dfd7ce;
+    cursor: pointer;
+  }
+}

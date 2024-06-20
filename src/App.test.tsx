@@ -9,6 +9,6 @@ describe('App tests', () => {
     expect(wrapper).toBeTruthy();
 
     const h1 = wrapper.container.querySelector('h1');
-    expect(h1?.textContent).toBe('Floyd-Steinberg algorithm');
+    expect(h1?.textContent).toBe('Image Processing Algorithms');
   });
 });
