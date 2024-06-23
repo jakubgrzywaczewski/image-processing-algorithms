@@ -2,8 +2,6 @@ export const applyReverseAlgorithm = (ctx: CanvasRenderingContext2D) => {
   const imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
   const data = imageData.data;
 
-  console.log(data);
-
   for (let i = 0; i < data.length; i += 4) {
     const originalR = data[i];
     const originalG = data[i + 1];

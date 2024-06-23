@@ -43,6 +43,8 @@ jobs:
         run: pnpm run lint
       - name: Type check
         run: pnpm run type-check
+      - name: Test coverage
+        run: pnpm run coverage
       - name: Build
         run: pnpm run build
       - name: Setup Pages
