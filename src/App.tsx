@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 import './App.css';
+import { Button } from './components/Button';
 import Canvas from './components/Canvas';
 import { ImageUploader } from './components/ImageUploader';
-import { Button } from './components/Button';
 
 import { applyFloydSteinbergDithering } from './algorithms/floyd-steinberg-dithering';
 import { applyGrayscaleAlgorithm } from './algorithms/gray-scale';
