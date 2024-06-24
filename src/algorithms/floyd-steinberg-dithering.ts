@@ -1,5 +1,5 @@
-import { PALETTE } from './helpers';
 import type { Color } from '../types';
+import { PALETTE } from './constants';
 
 export const findClosestPaletteColor = (color: Color): Color => {
   if (PALETTE.length === 0) {

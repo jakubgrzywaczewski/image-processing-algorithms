@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "clean": "rimraf dist",
     "type-check": "tsc --project ./tsconfig.json --noEmit --skipLibCheck",
-    "lint": "eslint --cache .",
+    "lint": "eslint --cache . --fix",
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "prepare": "husky"
