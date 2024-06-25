@@ -43,8 +43,15 @@ jobs:
         run: pnpm run lint
       - name: Type check
         run: pnpm run type-check
-      - name: Test coverage
-        run: pnpm run coverage
+      - name: Test
+        run: pnpm run test -- --coverage.enabled true --coverage.thresholds.autoUpdate true
+      - name: Bump threshold
+        if: ${{ github.ref == 'refs/heads/master' }}
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          file_pattern: 'vitest.config.ts'
+          commit_message: 'Bump test coverage'
+          push_options: --no-verify
       - name: Build
         run: pnpm run build
       - name: Setup Pages
