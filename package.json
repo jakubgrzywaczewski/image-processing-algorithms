@@ -1,5 +1,5 @@
 {
-  "name": "floyd-steinberg-algorithm-js",
+  "name": "image-processing-algorithms",
   "version": "2.0.0",
   "description": "This is an implementation of Floyd-Steinberg Algorithm.",
   "type": "module",
@@ -49,12 +49,8 @@
     "vitest-canvas-mock": "^0.3.3",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0"
   },
-  "keywords": [
-    "Floyd-Steinberg",
-    "grayscale",
-    "reverse pixels"
-  ],
+  "keywords": ["Floyd-Steinberg", "grayscale", "reverse pixels"],
   "author": "Jakub Grzywaczewski",
   "license": "MIT",
-  "homepage": "https://github.com/jakubgrzywaczewski/floyd-steinberg-algorithm-js"
+  "homepage": "https://github.com/jakubgrzywaczewski/image-processing-algorithms"
 }
