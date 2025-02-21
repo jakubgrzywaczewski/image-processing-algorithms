@@ -31,5 +31,5 @@ export default defineConfig({
       },
     },
   },
-  base: '/floyd-steinberg-algorithm-js/',
+  base: '/image-processing-algorithms/',
 });
