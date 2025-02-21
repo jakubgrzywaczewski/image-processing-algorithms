@@ -1,9 +1,8 @@
 import { useState } from 'react';
 
 import './App.css';
-import { Button } from './components/Button';
 import Canvas from './components/Canvas';
-import { ImageUploader } from './components/ImageUploader';
+import Toolbar from './components/Toolbar';
 
 import { applyFloydSteinbergDithering } from './algorithms/floyd-steinberg-dithering';
 import { applyGrayscaleAlgorithm } from './algorithms/gray-scale';
@@ -19,10 +18,44 @@ function App() {
     setOriginalImageData(data);
   };
 
-  const restoreOriginal = () => {
-    if (originalImageData && canvasContext) {
-      canvasContext.clearRect(0, 0, canvasContext.canvas.width, canvasContext.canvas.height);
-      canvasContext.putImageData(originalImageData, 0, 0);
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+            const imageData = ctx.getImageData(0, 0, img.width, img.height);
+            handleImageUpload(imageData);
+          }
+        };
+        img.src = e.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAlgorithmSelect = (algorithm: string) => {
+    if (!canvasContext) return;
+
+    switch (algorithm) {
+      case 'floyd-steinberg':
+        applyFloydSteinbergDithering(canvasContext);
+        break;
+      case 'grayscale':
+        applyGrayscaleAlgorithm(canvasContext);
+        break;
+      case 'reverse':
+        applyReverseAlgorithm(canvasContext);
+        break;
+      default:
+        break;
     }
   };
 
@@ -33,22 +66,12 @@ function App() {
       </header>
       <main>
         <Canvas setCanvasContext={setCanvasContext} imageData={imageData} />
-        <ImageUploader setImageData={handleImageUpload} />
       </main>
-      <nav>
-        {canvasContext && imageData && (
-          <>
-            <Button onClick={() => applyFloydSteinbergDithering(canvasContext)}>
-              Floyd-Steinberg Dithering
-            </Button>
-            <Button onClick={() => applyGrayscaleAlgorithm(canvasContext)}>
-              Grayscale Algorithm
-            </Button>
-            <Button onClick={() => applyReverseAlgorithm(canvasContext)}>Reverse Algorithm</Button>
-            <Button onClick={restoreOriginal}>Restore Original</Button>
-          </>
-        )}
-      </nav>
+      <Toolbar
+        hasImage={!!imageData}
+        onFileSelect={handleFileSelect}
+        onAlgorithmSelect={handleAlgorithmSelect}
+      />
     </div>
   );
 }
