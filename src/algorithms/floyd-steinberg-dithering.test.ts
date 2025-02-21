@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
-import { applyFloydSteinbergDithering, findClosestPaletteColor } from './floyd-steinberg-dithering';
 import type { Color } from '../types';
+import { applyFloydSteinbergDithering, findClosestPaletteColor } from './floyd-steinberg-dithering';
 
 describe('findClosestPaletteColor', () => {
   test('should find the closest color correctly', () => {
@@ -25,7 +25,11 @@ describe('applyFloydSteinbergDithering', () => {
     const mockCanvas = document.createElement('canvas');
     mockCanvas.width = 2;
     mockCanvas.height = 2;
-    const ctx = mockCanvas.getContext('2d')!;
+    const ctx = mockCanvas.getContext('2d');
+
+    if (!ctx) {
+      throw new Error('Failed to get canvas context');
+    }
 
     ctx.fillStyle = 'rgba(255, 255, 255, 1)';
     ctx.fillRect(0, 0, 1, 1);

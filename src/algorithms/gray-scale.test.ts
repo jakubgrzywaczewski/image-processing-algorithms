@@ -10,7 +10,7 @@ describe('applyGrayscaleAlgorithm', () => {
     canvas = document.createElement('canvas');
     canvas.width = 4;
     canvas.height = 4;
-    ctx = canvas.getContext('2d')!;
+    ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 
     const imageData = ctx.createImageData(canvas.width, canvas.height);
     const data = imageData.data;

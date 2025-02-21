@@ -3,13 +3,15 @@ export const applyReverseAlgorithm = (ctx: CanvasRenderingContext2D) => {
   const data = imageData.data;
 
   for (let i = 0; i < data.length; i += 4) {
-    const originalR = data[i];
-    const originalG = data[i + 1];
-    const originalB = data[i + 2];
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
 
-    data[i] = 255 - originalR!;
-    data[i + 1] = 255 - originalG!;
-    data[i + 2] = 255 - originalB!;
+    if (r !== undefined && g !== undefined && b !== undefined) {
+      data[i] = 255 - r;
+      data[i + 1] = 255 - g;
+      data[i + 2] = 255 - b;
+    }
   }
 
   ctx.putImageData(imageData, 0, 0);

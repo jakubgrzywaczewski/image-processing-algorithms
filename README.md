@@ -12,10 +12,11 @@ Make sure you have [Node.js](http://nodejs.org/) and [pnpm](https://pnpm.io/) in
 
 ```bash
 $ git clone https://github.com/jakubgrzywaczewski/image-processing-algorithms
-$ cd floyd-steinberg-algorithm-js
+$ cd image-processing-algorithms
 $ pnpm install
 $ pnpm run dev
 ```
 
 # Live demo
+
 [https://github.com/jakubgrzywaczewski/image-processing-algorithms](https://github.com/jakubgrzywaczewski/image-processing-algorithms)

@@ -3,8 +3,14 @@ export const applyGrayscaleAlgorithm = (ctx: CanvasRenderingContext2D) => {
   const data = imageData.data;
 
   for (let i = 0; i < data.length; i += 4) {
-    const avg = Math.round(0.299 * data[i]! + 0.587 * data[i + 1]! + 0.114 * data[i + 2]!);
-    data[i] = data[i + 1] = data[i + 2] = avg;
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+
+    if (r !== undefined && g !== undefined && b !== undefined) {
+      const avg = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
+      data[i] = data[i + 1] = data[i + 2] = avg;
+    }
   }
 
   ctx.putImageData(imageData, 0, 0);
