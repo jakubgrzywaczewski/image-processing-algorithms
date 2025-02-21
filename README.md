@@ -11,11 +11,11 @@ A web app that has implemented simple graphical algorithms. At this moment:
 Make sure you have [Node.js](http://nodejs.org/) and [pnpm](https://pnpm.io/) installed.
 
 ```bash
-$ git clone https://github.com/enk1/floyd-steinberg-algorithm-js.git
+$ git clone https://github.com/jakubgrzywaczewski/image-processing-algorithms
 $ cd floyd-steinberg-algorithm-js
 $ pnpm install
 $ pnpm run dev
 ```
 
 # Live demo
-[https://jakubgrzywaczewski.github.io/floyd-steinberg-algorithm-js/](https://jakubgrzywaczewski.github.io/floyd-steinberg-algorithm-js/)
+[https://github.com/jakubgrzywaczewski/image-processing-algorithms](https://github.com/jakubgrzywaczewski/image-processing-algorithms)
