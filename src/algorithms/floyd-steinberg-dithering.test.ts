@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
-import { applyFloydSteinbergDithering, findClosestPaletteColor } from './floyd-steinberg-dithering';
 import type { Color } from '../types';
+import { applyFloydSteinbergDithering, findClosestPaletteColor } from './floyd-steinberg-dithering';
 
 describe('findClosestPaletteColor', () => {
   test('should find the closest color correctly', () => {

@@ -41,6 +41,14 @@ const Toolbar = ({ onAlgorithmSelect, hasImage, onFileSelect }: ToolbarProps) =>
           >
             RV
           </button>
+          <button
+            type="button"
+            className="toolbar-button"
+            onClick={() => onAlgorithmSelect(Algorithm.RESTORE)}
+            title="Restore: Return to original image"
+          >
+            OR
+          </button>
           <label className="toolbar-button" title="Change Image: Upload a new image to process">
             <input
               type="file"

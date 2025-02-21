@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
 import './App.css';
-import Canvas from './components/Canvas';
-import Toolbar from './components/Toolbar';
-
 import { applyFloydSteinbergDithering } from './algorithms/floyd-steinberg-dithering';
 import { applyGrayscaleAlgorithm } from './algorithms/gray-scale';
 import { applyReverseAlgorithm } from './algorithms/reverse-pixels-algorithm';
+import Canvas from './components/Canvas';
+import Toolbar from './components/Toolbar';
+import { Algorithm } from './types/algorithms';
 
 function App() {
   const [imageData, setImageData] = useState<ImageData | null>(null);
@@ -41,20 +41,23 @@ function App() {
     }
   };
 
-  const handleAlgorithmSelect = (algorithm: string) => {
+  const handleAlgorithmSelect = (algorithm: Algorithm) => {
     if (!canvasContext) return;
 
     switch (algorithm) {
-      case 'floyd-steinberg':
+      case Algorithm.FLOYD_STEINBERG:
         applyFloydSteinbergDithering(canvasContext);
         break;
-      case 'grayscale':
+      case Algorithm.GRAYSCALE:
         applyGrayscaleAlgorithm(canvasContext);
         break;
-      case 'reverse':
+      case Algorithm.REVERSE:
         applyReverseAlgorithm(canvasContext);
         break;
-      default:
+      case Algorithm.RESTORE:
+        if (originalImageData) {
+          canvasContext.putImageData(originalImageData, 0, 0);
+        }
         break;
     }
   };

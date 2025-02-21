@@ -1,5 +1,6 @@
-import './Canvas.css';
 import { useEffect, useRef } from 'react';
+
+import './Canvas.css';
 
 type CanvasProps = {
   setCanvasContext: (context: CanvasRenderingContext2D | null) => void;
