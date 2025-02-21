@@ -19,4 +19,4 @@ $ pnpm run dev
 
 # Live demo
 
-[https://github.com/jakubgrzywaczewski/image-processing-algorithms](https://github.com/jakubgrzywaczewski/image-processing-algorithms)
+[https://jakubgrzywaczewski.github.io/image-processing-algorithms/](https://jakubgrzywaczewski.github.io/image-processing-algorithms/)
