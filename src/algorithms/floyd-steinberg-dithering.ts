@@ -6,14 +6,19 @@ export const findClosestPaletteColor = (color: Color): Color => {
     throw new Error('Palette is empty. Cannot determine the closest color.');
   }
 
-  let closestColor: Color = PALETTE[0]!;
+  const firstColor = PALETTE[0];
+  if (!firstColor) {
+    throw new Error('Invalid palette color.');
+  }
+
+  let closestColor = firstColor;
   let minDistance = Number.MAX_VALUE;
 
   for (const paletteColor of PALETTE) {
     const distance = Math.sqrt(
-      Math.pow(color.r - paletteColor.r, 2) +
-        Math.pow(color.g - paletteColor.g, 2) +
-        Math.pow(color.b - paletteColor.b, 2),
+      (color.r - paletteColor.r) ** 2 +
+        (color.g - paletteColor.g) ** 2 +
+        (color.b - paletteColor.b) ** 2,
     );
 
     if (distance < minDistance) {
@@ -38,9 +43,15 @@ function distributeError(
 ) {
   if (x >= 0 && x < width && y >= 0 && y < height) {
     const index = (y * width + x) * 4;
-    data[index] = Math.min(255, Math.max(0, data[index]! + errR * factor));
-    data[index + 1] = Math.min(255, Math.max(0, data[index + 1]! + errG * factor));
-    data[index + 2] = Math.min(255, Math.max(0, data[index + 2]! + errB * factor));
+    const r = data[index];
+    const g = data[index + 1];
+    const b = data[index + 2];
+
+    if (r !== undefined && g !== undefined && b !== undefined) {
+      data[index] = Math.min(255, Math.max(0, r + errR * factor));
+      data[index + 1] = Math.min(255, Math.max(0, g + errG * factor));
+      data[index + 2] = Math.min(255, Math.max(0, b + errB * factor));
+    }
   }
 }
 
@@ -53,10 +64,18 @@ export const applyFloydSteinbergDithering = (ctx: CanvasRenderingContext2D): voi
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const index = (y * width + x) * 4;
+      const r = data[index];
+      const g = data[index + 1];
+      const b = data[index + 2];
+
+      if (r === undefined || g === undefined || b === undefined) {
+        continue;
+      }
+
       const oldColor: Color = {
-        r: data[index]!,
-        g: data[index + 1]!,
-        b: data[index + 2]!,
+        r,
+        g,
+        b,
       };
       const newColor = findClosestPaletteColor(oldColor);
       data[index] = newColor.r;

@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { applyReverseAlgorithm } from './reverse-pixels-algorithm';
@@ -13,7 +10,7 @@ describe('applyReverseAlgorithm', () => {
     canvas = document.createElement('canvas');
     canvas.width = 2;
     canvas.height = 2;
-    ctx = canvas.getContext('2d')!;
+    ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 
     ctx.putImageData = vi.fn(
       (

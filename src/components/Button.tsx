@@ -1,12 +1,14 @@
-import React from 'react';
+import type { ReactNode } from 'react';
 
 import './Button.css';
 
 type ButtonProps = {
   onClick: () => void;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 export const Button = ({ onClick, children }: ButtonProps) => (
-  <button onClick={onClick}>{children}</button>
+  <button onClick={onClick} type="button">
+    {children}
+  </button>
 );

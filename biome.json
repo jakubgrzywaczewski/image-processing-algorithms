@@ -18,8 +18,10 @@
   },
   "javascript": {
     "formatter": {
-      "quoteStyle": "single",
-      "trailingComma": "all"
+      "quoteStyle": "single"
     }
+  },
+  "files": {
+    "ignore": ["dist/**/*", "node_modules/**/*", "build/**/*", "coverage/**/*"]
   }
 }
