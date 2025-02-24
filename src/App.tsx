@@ -84,6 +84,27 @@ function App() {
           }
         }
         break;
+      case Algorithm.DOWNLOAD:
+        if (canvasContext) {
+          // Create a temporary link element
+          const link = document.createElement('a');
+
+          // Set the download attribute with a default filename
+          link.download = 'processed-image.png';
+
+          // Convert the canvas content to a data URL
+          link.href = canvasContext.canvas.toDataURL('image/png');
+
+          // Append to the document
+          document.body.appendChild(link);
+
+          // Trigger the download
+          link.click();
+
+          // Clean up
+          document.body.removeChild(link);
+        }
+        break;
     }
   };
 
