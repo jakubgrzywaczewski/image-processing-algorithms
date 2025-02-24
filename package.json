@@ -15,8 +15,7 @@
     "coverage": "vitest run --coverage",
     "prepare": "husky",
     "format": "biome format --write .",
-    "format:check": "biome format .",
-    "lint:check": "eslint . --ext .ts,.tsx"
+    "format:check": "biome format ."
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -26,7 +25,9 @@
     "@biomejs/biome": "1.5.3",
     "@testing-library/jest-dom": "^6.4.6",
     "@testing-library/react": "^16.0.0",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/eslint": "^8",
+    "@types/node": "^22.13.5",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.13.0",
@@ -45,11 +46,14 @@
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.13.0",
     "vite": "^5.3.1",
-    "vitest": "^1.6.0",
-    "vitest-canvas-mock": "^0.3.3",
-    "@trivago/prettier-plugin-sort-imports": "^4.3.0"
+    "vitest": "^1.6.1",
+    "vitest-canvas-mock": "^0.3.3"
   },
-  "keywords": ["Floyd-Steinberg", "grayscale", "reverse pixels"],
+  "keywords": [
+    "Floyd-Steinberg",
+    "grayscale",
+    "reverse pixels"
+  ],
   "author": "Jakub Grzywaczewski",
   "license": "MIT",
   "homepage": "https://github.com/jakubgrzywaczewski/image-processing-algorithms"

@@ -4,6 +4,14 @@ import { describe, expect, test, vi } from 'vitest';
 
 import Canvas from './Canvas';
 
+// Declare the global type for createImageBitmap
+declare global {
+  function createImageBitmap(
+    image: ImageBitmapSource,
+    options?: ImageBitmapOptions,
+  ): Promise<ImageBitmap>;
+}
+
 // Mock createImageBitmap globally since it's not implemented in jsdom
 global.createImageBitmap = vi.fn().mockResolvedValue({
   width: 100,
