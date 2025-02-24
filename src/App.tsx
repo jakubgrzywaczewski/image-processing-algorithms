@@ -55,8 +55,54 @@ function App() {
         applyReverseAlgorithm(canvasContext);
         break;
       case Algorithm.RESTORE:
-        if (originalImageData) {
-          canvasContext.putImageData(originalImageData, 0, 0);
+        if (originalImageData && canvasContext) {
+          // Create a temporary canvas with original dimensions
+          const tempCanvas = document.createElement('canvas');
+          tempCanvas.width = originalImageData.width;
+          tempCanvas.height = originalImageData.height;
+          const tempCtx = tempCanvas.getContext('2d');
+
+          if (tempCtx) {
+            // Put the original image data on the temp canvas
+            tempCtx.putImageData(originalImageData, 0, 0);
+
+            // Clear the current canvas
+            canvasContext.clearRect(0, 0, canvasContext.canvas.width, canvasContext.canvas.height);
+
+            // Draw the temp canvas onto the main canvas, preserving the current dimensions
+            canvasContext.drawImage(
+              tempCanvas,
+              0,
+              0,
+              originalImageData.width,
+              originalImageData.height,
+              0,
+              0,
+              canvasContext.canvas.width,
+              canvasContext.canvas.height,
+            );
+          }
+        }
+        break;
+      case Algorithm.DOWNLOAD:
+        if (canvasContext) {
+          // Create a temporary link element
+          const link = document.createElement('a');
+
+          // Set the download attribute with a default filename
+          link.download = 'processed-image.png';
+
+          // Convert the canvas content to a data URL
+          link.href = canvasContext.canvas.toDataURL('image/png');
+
+          // Append to the document
+          document.body.appendChild(link);
+
+          // Trigger the download
+          link.click();
+
+          // Clean up
+          document.body.removeChild(link);
         }
         break;
     }

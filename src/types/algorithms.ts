@@ -3,4 +3,5 @@ export enum Algorithm {
   GRAYSCALE = 'grayscale',
   REVERSE = 'reverse',
   RESTORE = 'restore',
+  DOWNLOAD = 'download',
 }

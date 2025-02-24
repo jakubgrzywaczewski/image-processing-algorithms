@@ -49,6 +49,14 @@ const Toolbar = ({ onAlgorithmSelect, hasImage, onFileSelect }: ToolbarProps) =>
           >
             OR
           </button>
+          <button
+            type="button"
+            className="toolbar-button"
+            onClick={() => onAlgorithmSelect(Algorithm.DOWNLOAD)}
+            title="Download: Save the processed image to your device"
+          >
+            ↓
+          </button>
           <label className="toolbar-button" title="Change Image: Upload a new image to process">
             <input
               type="file"
