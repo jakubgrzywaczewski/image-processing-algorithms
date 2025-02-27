@@ -3,4 +3,47 @@ canvas {
   margin: 0 auto;
   border: 0.75rem solid #273535;
   border-radius: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.2); /* Subtle white background */
+  /* Subtle grid pattern */
+  background-image: 
+    linear-gradient(rgba(200, 200, 200, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200, 200, 200, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.canvas-container {
+  position: relative;
+  display: inline-block;
+  margin: 0 auto;
+  /* Add shadow to enhance the distinction */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  /* Add a slight background glow */
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+  padding: 15px; /* Add padding around the canvas */
+}
+
+.zoom-control {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: rgba(39, 53, 53, 0.7);
+  padding: 8px 12px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 10;
+}
+
+.zoom-slider {
+  width: 120px;
+  cursor: pointer;
+}
+
+.zoom-label {
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  min-width: 45px;
+  text-align: center;
 }
