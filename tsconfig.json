@@ -2,10 +2,11 @@
   "compilerOptions": {
     "target": "es2022",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "module": "esnext",
+    "module": "preserve",
     "skipLibCheck": true,
 
     "moduleResolution": "bundler",
+    "moduleDetection": "force",
     "jsx": "react-jsx",
     "declaration": true,
     "esModuleInterop": true,
@@ -13,8 +14,15 @@
     "outDir": "dist",
     "noEmit": true,
     "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
 
+    "exactOptionalPropertyTypes": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
+    "noUncheckedSideEffectImports": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strict": true,
