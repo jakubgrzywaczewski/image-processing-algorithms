@@ -1,6 +1,7 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import type { Color } from '../types';
+import { PALETTE } from './constants';
 import { applyFloydSteinbergDithering, findClosestPaletteColor } from './floyd-steinberg-dithering';
 
 describe('findClosestPaletteColor', () => {
@@ -22,23 +23,32 @@ describe('findClosestPaletteColor', () => {
 
 describe('applyFloydSteinbergDithering', () => {
   test('should apply dithering to a simple image', () => {
-    const mockCanvas = document.createElement('canvas');
-    mockCanvas.width = 2;
-    mockCanvas.height = 2;
-    const ctx = mockCanvas.getContext('2d');
-
-    if (!ctx) {
-      throw new Error('Failed to get canvas context');
-    }
-
-    ctx.fillStyle = 'rgba(255, 255, 255, 1)';
-    ctx.fillRect(0, 0, 1, 1);
-    ctx.fillStyle = 'rgba(0, 0, 0, 1)';
-    ctx.fillRect(1, 1, 1, 1);
+    const imageData = new ImageData(
+      new Uint8ClampedArray([
+        255, 255, 255, 255, 120, 130, 140, 255, 40, 50, 60, 255, 0, 0, 0, 255,
+      ]),
+      2,
+      2,
+    );
+    const ctx = {
+      canvas: { width: 2, height: 2 },
+      getImageData: () => imageData,
+      putImageData: vi.fn(),
+    } as unknown as CanvasRenderingContext2D;
 
     applyFloydSteinbergDithering(ctx);
-    const imageData = ctx.getImageData(0, 0, 2, 2).data;
+    const pixels = imageData.data;
 
-    expect(imageData).toEqual(expect.any(Uint8ClampedArray));
+    expect(pixels).toEqual(expect.any(Uint8ClampedArray));
+    for (let index = 0; index < pixels.length; index += 4) {
+      expect(
+        PALETTE.some(
+          ({ r, g, b }) =>
+            pixels[index] === r && pixels[index + 1] === g && pixels[index + 2] === b,
+        ),
+      ).toBe(true);
+      expect(pixels[index + 3]).toBe(255);
+    }
+    expect(ctx.putImageData).toHaveBeenCalledWith(imageData, 0, 0);
   });
 });

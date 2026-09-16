@@ -10,7 +10,7 @@ export default defineConfig({
     setupFiles: './setupTests.ts',
     deps: {
       optimizer: {
-        web: {
+        client: {
           include: ['vitest-canvas-mock'],
         },
       },

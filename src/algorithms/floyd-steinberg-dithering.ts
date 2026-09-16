@@ -31,7 +31,7 @@ export const findClosestPaletteColor = (color: Color): Color => {
 };
 
 function distributeError(
-  data: Uint8ClampedArray,
+  data: Float32Array,
   x: number,
   y: number,
   width: number,
@@ -48,9 +48,9 @@ function distributeError(
     const b = data[index + 2];
 
     if (r !== undefined && g !== undefined && b !== undefined) {
-      data[index] = Math.min(255, Math.max(0, r + errR * factor));
-      data[index + 1] = Math.min(255, Math.max(0, g + errG * factor));
-      data[index + 2] = Math.min(255, Math.max(0, b + errB * factor));
+      data[index] = r + errR * factor;
+      data[index + 1] = g + errG * factor;
+      data[index + 2] = b + errB * factor;
     }
   }
 }
@@ -58,15 +58,16 @@ function distributeError(
 export const applyFloydSteinbergDithering = (ctx: CanvasRenderingContext2D): void => {
   const imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
   const data = imageData.data;
+  const workingData = new Float32Array(data);
   const width = imageData.width;
   const height = imageData.height;
 
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const index = (y * width + x) * 4;
-      const r = data[index];
-      const g = data[index + 1];
-      const b = data[index + 2];
+      const r = workingData[index];
+      const g = workingData[index + 1];
+      const b = workingData[index + 2];
 
       if (r === undefined || g === undefined || b === undefined) {
         continue;
@@ -78,6 +79,9 @@ export const applyFloydSteinbergDithering = (ctx: CanvasRenderingContext2D): voi
         b,
       };
       const newColor = findClosestPaletteColor(oldColor);
+      workingData[index] = newColor.r;
+      workingData[index + 1] = newColor.g;
+      workingData[index + 2] = newColor.b;
       data[index] = newColor.r;
       data[index + 1] = newColor.g;
       data[index + 2] = newColor.b;
@@ -86,10 +90,10 @@ export const applyFloydSteinbergDithering = (ctx: CanvasRenderingContext2D): voi
       const errG = oldColor.g - newColor.g;
       const errB = oldColor.b - newColor.b;
 
-      distributeError(data, x + 1, y, width, height, errR, errG, errB, 7 / 16);
-      distributeError(data, x - 1, y + 1, width, height, errR, errG, errB, 3 / 16);
-      distributeError(data, x, y + 1, width, height, errR, errG, errB, 5 / 16);
-      distributeError(data, x + 1, y + 1, width, height, errR, errG, errB, 1 / 16);
+      distributeError(workingData, x + 1, y, width, height, errR, errG, errB, 7 / 16);
+      distributeError(workingData, x - 1, y + 1, width, height, errR, errG, errB, 3 / 16);
+      distributeError(workingData, x, y + 1, width, height, errR, errG, errB, 5 / 16);
+      distributeError(workingData, x + 1, y + 1, width, height, errR, errG, errB, 1 / 16);
     }
   }
 

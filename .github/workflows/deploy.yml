@@ -16,8 +16,6 @@ env:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -31,32 +29,27 @@ jobs:
         uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 10
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22.22.2
           cache: 'pnpm'
       - name: Install dependencies
-        run: pnpm i
+        run: pnpm install --frozen-lockfile
       - name: ESLint
         run: pnpm run lint
       - name: Type check
         run: pnpm run type-check
       - name: Test
-        run: pnpm run test -- --coverage.enabled true --coverage.thresholds.autoUpdate true
-      - name: Bump threshold
-        if: ${{ github.ref == 'refs/heads/master' }}
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          file_pattern: 'vitest.config.ts'
-          commit_message: 'Bump test coverage'
-          push_options: --no-verify
+        run: pnpm run coverage
       - name: Build
         run: pnpm run build
       - name: Setup Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: actions/configure-pages@v4
       - name: Upload artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: actions/upload-pages-artifact@v3
         with:
           path: './dist'
@@ -67,6 +60,9 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
     runs-on: ubuntu-latest
     steps:
       - name: Setup Pages

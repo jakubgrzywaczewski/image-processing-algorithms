@@ -1,10 +1,11 @@
 import '../styles/Toolbar.css';
+import type { ChangeEvent } from 'react';
 import { Algorithm } from '../types/algorithms';
 
 interface ToolbarProps {
   onAlgorithmSelect: (algorithm: Algorithm) => void;
   hasImage: boolean;
-  onFileSelect: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onFileSelect: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Toolbar = ({ onAlgorithmSelect, hasImage, onFileSelect }: ToolbarProps) => {

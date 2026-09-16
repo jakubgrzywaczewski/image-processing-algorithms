@@ -1,3 +1,4 @@
+import type { ChangeEvent } from 'react';
 import { useState } from 'react';
 
 import './App.css';
@@ -6,20 +7,26 @@ import { applyGrayscaleAlgorithm } from './algorithms/gray-scale';
 import { applyReverseAlgorithm } from './algorithms/reverse-pixels-algorithm';
 import Canvas from './components/Canvas';
 import Toolbar from './components/Toolbar';
+import {
+  applyImageTransform,
+  cloneImageData,
+  downloadImageData,
+  type ImageTransform,
+} from './image-data';
 import { Algorithm } from './types/algorithms';
 
 function App() {
   const [imageData, setImageData] = useState<ImageData | null>(null);
   const [originalImageData, setOriginalImageData] = useState<ImageData | null>(null);
-  const [canvasContext, setCanvasContext] = useState<CanvasRenderingContext2D | null>(null);
-
   const handleImageUpload = (data: ImageData) => {
-    setImageData(data);
-    setOriginalImageData(data);
+    setImageData(cloneImageData(data));
+    setOriginalImageData(cloneImageData(data));
   };
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+    event.target.value = '';
+
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -35,75 +42,40 @@ function App() {
             handleImageUpload(imageData);
           }
         };
-        img.src = e.target?.result as string;
+        if (typeof e.target?.result === 'string') {
+          img.src = e.target.result;
+        }
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handleAlgorithmSelect = (algorithm: Algorithm) => {
-    if (!canvasContext) return;
+    if (!imageData) return;
+
+    const applyTransform = (transform: ImageTransform) => {
+      setImageData((currentImageData) =>
+        currentImageData ? applyImageTransform(currentImageData, transform) : currentImageData,
+      );
+    };
 
     switch (algorithm) {
       case Algorithm.FLOYD_STEINBERG:
-        applyFloydSteinbergDithering(canvasContext);
+        applyTransform(applyFloydSteinbergDithering);
         break;
       case Algorithm.GRAYSCALE:
-        applyGrayscaleAlgorithm(canvasContext);
+        applyTransform(applyGrayscaleAlgorithm);
         break;
       case Algorithm.REVERSE:
-        applyReverseAlgorithm(canvasContext);
+        applyTransform(applyReverseAlgorithm);
         break;
       case Algorithm.RESTORE:
-        if (originalImageData && canvasContext) {
-          // Create a temporary canvas with original dimensions
-          const tempCanvas = document.createElement('canvas');
-          tempCanvas.width = originalImageData.width;
-          tempCanvas.height = originalImageData.height;
-          const tempCtx = tempCanvas.getContext('2d');
-
-          if (tempCtx) {
-            // Put the original image data on the temp canvas
-            tempCtx.putImageData(originalImageData, 0, 0);
-
-            // Clear the current canvas
-            canvasContext.clearRect(0, 0, canvasContext.canvas.width, canvasContext.canvas.height);
-
-            // Draw the temp canvas onto the main canvas, preserving the current dimensions
-            canvasContext.drawImage(
-              tempCanvas,
-              0,
-              0,
-              originalImageData.width,
-              originalImageData.height,
-              0,
-              0,
-              canvasContext.canvas.width,
-              canvasContext.canvas.height,
-            );
-          }
+        if (originalImageData) {
+          setImageData(cloneImageData(originalImageData));
         }
         break;
       case Algorithm.DOWNLOAD:
-        if (canvasContext) {
-          // Create a temporary link element
-          const link = document.createElement('a');
-
-          // Set the download attribute with a default filename
-          link.download = 'processed-image.png';
-
-          // Convert the canvas content to a data URL
-          link.href = canvasContext.canvas.toDataURL('image/png');
-
-          // Append to the document
-          document.body.appendChild(link);
-
-          // Trigger the download
-          link.click();
-
-          // Clean up
-          document.body.removeChild(link);
-        }
+        downloadImageData(imageData);
         break;
     }
   };
@@ -114,7 +86,7 @@ function App() {
         <h1>Image Processing Algorithms</h1>
       </header>
       <main>
-        <Canvas setCanvasContext={setCanvasContext} imageData={imageData} />
+        <Canvas imageData={imageData} />
       </main>
       <Toolbar
         hasImage={!!imageData}

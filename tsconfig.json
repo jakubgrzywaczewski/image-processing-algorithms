@@ -5,7 +5,7 @@
     "module": "esnext",
     "skipLibCheck": true,
 
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "declaration": true,
     "esModuleInterop": true,
@@ -18,7 +18,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strict": true,
-    "types": ["vitest/jsdom", "node"]
+    "types": ["vitest/globals", "@testing-library/jest-dom/vitest", "vite/client", "node"]
   },
   "include": ["src"],
   "exclude": ["dist"]

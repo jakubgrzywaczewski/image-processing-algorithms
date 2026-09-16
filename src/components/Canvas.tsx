@@ -1,149 +1,80 @@
-import { useEffect, useRef, useState } from 'react';
 import type { MouseEvent } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import './Canvas.css';
+import { imageDataToCanvas } from '../image-data';
 
 type CanvasProps = {
-  setCanvasContext: (context: CanvasRenderingContext2D | null) => void;
   imageData: ImageData | null;
 };
 
-async function calculateScaledDimensions(
-  imageBitmap: ImageBitmap,
+export function calculateScaledDimensions(
+  image: Pick<ImageData, 'width' | 'height'>,
   maxWidth: number,
   maxHeight: number,
 ) {
-  const naturalWidth = imageBitmap.width;
-  const naturalHeight = imageBitmap.height;
-
-  // Determine if image is horizontal or vertical
-  const isHorizontal = naturalWidth >= naturalHeight;
-
-  let scale: number;
-  if (isHorizontal) {
-    // For horizontal images, adapt to width
-    scale = Math.min(maxWidth / naturalWidth, 1);
-  } else {
-    // For vertical images, adapt to height
-    scale = Math.min(maxHeight / naturalHeight, 1);
-  }
-
-  // Additional check to ensure we never exceed viewport constraints
-  // Calculate dimensions after applying the initial scale
-  let newWidth = naturalWidth * scale;
-  let newHeight = naturalHeight * scale;
-
-  // If after scaling, the height still exceeds maxHeight, scale down further
-  if (newHeight > maxHeight) {
-    const heightScale = maxHeight / newHeight;
-    newWidth *= heightScale;
-    newHeight = maxHeight;
-    scale *= heightScale;
-  }
-
-  // Similarly for width
-  if (newWidth > maxWidth) {
-    const widthScale = maxWidth / newWidth;
-    newHeight *= widthScale;
-    newWidth = maxWidth;
-    scale *= widthScale;
-  }
+  const naturalWidth = image.width;
+  const naturalHeight = image.height;
+  const scale = Math.min(maxWidth / naturalWidth, maxHeight / naturalHeight, 1);
+  const newWidth = Math.max(1, Math.round(naturalWidth * scale));
+  const newHeight = Math.max(1, Math.round(naturalHeight * scale));
 
   return { newWidth, newHeight, scale, naturalWidth, naturalHeight };
 }
 
-const Canvas = ({ setCanvasContext, imageData }: CanvasProps) => {
+const Canvas = ({ imageData }: CanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [zoomLevel, setZoomLevel] = useState<number>(100); // 100% is the default zoom level
-  const [originalImageBitmap, setOriginalImageBitmap] = useState<ImageBitmap | null>(null);
-  const [canvasWidth, setCanvasWidth] = useState<number>(0);
-  const [canvasHeight, setCanvasHeight] = useState<number>(0);
-  const [baseScale, setBaseScale] = useState<number>(1);
-  const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [offsetX, setOffsetX] = useState<number>(0);
-  const [offsetY, setOffsetY] = useState<number>(0);
-  const [dragStartX, setDragStartX] = useState<number>(0);
-  const [dragStartY, setDragStartY] = useState<number>(0);
+  const [zoomLevel, setZoomLevel] = useState(100);
+  const [isDragging, setIsDragging] = useState(false);
+  const [offsetX, setOffsetX] = useState(0);
+  const [offsetY, setOffsetY] = useState(0);
+  const [dragStartX, setDragStartX] = useState(0);
+  const [dragStartY, setDragStartY] = useState(0);
+  const [viewport, setViewport] = useState(() => ({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  }));
 
-  // This effect loads the image and sets up the canvas
+  const sourceCanvas = useMemo(
+    () => (imageData ? imageDataToCanvas(imageData) : null),
+    [imageData],
+  );
+  const dimensions = useMemo(
+    () =>
+      imageData
+        ? calculateScaledDimensions(imageData, viewport.width * 0.9, viewport.height * 0.8)
+        : null,
+    [imageData, viewport],
+  );
+
   useEffect(() => {
-    const setupCanvas = async () => {
-      if (imageData) {
-        const bitmap = await createImageBitmap(imageData);
-        setOriginalImageBitmap(bitmap);
-
-        // Calculate the base dimensions (100% zoom) - this will be the fixed canvas size
-        const maxWidth = window.innerWidth * 0.9;
-        const maxHeight = window.innerHeight * 0.8;
-        const { newWidth, newHeight, scale } = await calculateScaledDimensions(
-          bitmap,
-          maxWidth,
-          maxHeight,
-        );
-
-        // Save the base scale (default fit)
-        setBaseScale(scale);
-
-        // Set the fixed canvas dimensions
-        setCanvasWidth(newWidth);
-        setCanvasHeight(newHeight);
-
-        if (canvasRef.current) {
-          canvasRef.current.width = newWidth;
-          canvasRef.current.height = newHeight;
-        }
-
-        // Reset offset when loading a new image
-        setOffsetX(0);
-        setOffsetY(0);
-      }
+    const handleResize = () => {
+      setViewport({ width: window.innerWidth, height: window.innerHeight });
     };
 
-    setupCanvas();
-  }, [imageData]);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-  // This effect handles drawing with the current zoom level and position
   useEffect(() => {
-    const updateCanvas = async () => {
-      if (canvasRef.current && originalImageBitmap && canvasWidth && canvasHeight && baseScale) {
-        const context = canvasRef.current.getContext('2d');
-        if (context) {
-          // Clear the canvas
-          context.clearRect(0, 0, canvasWidth, canvasHeight);
+    if (!canvasRef.current || !sourceCanvas || !dimensions) return;
 
-          // Calculate the zoom factor
-          // 0% -> 0, 100% -> baseScale, 200% -> baseScale * 2
-          const zoomFactor = (zoomLevel / 100) * baseScale;
+    const { newWidth, newHeight, scale } = dimensions;
+    const context = canvasRef.current.getContext('2d');
+    if (!context) return;
 
-          // Calculate dimensions of the zoomed image
-          const zoomedWidth = originalImageBitmap.width * zoomFactor;
-          const zoomedHeight = originalImageBitmap.height * zoomFactor;
+    canvasRef.current.width = newWidth;
+    canvasRef.current.height = newHeight;
+    context.clearRect(0, 0, newWidth, newHeight);
 
-          // Calculate positioning to center the zoomed image, plus the current offset
-          const centerX = (canvasWidth - zoomedWidth) / 2 + offsetX;
-          const centerY = (canvasHeight - zoomedHeight) / 2 + offsetY;
+    const zoomFactor = (zoomLevel / 100) * scale;
+    const zoomedWidth = sourceCanvas.width * zoomFactor;
+    const zoomedHeight = sourceCanvas.height * zoomFactor;
+    const centerX = (newWidth - zoomedWidth) / 2 + offsetX;
+    const centerY = (newHeight - zoomedHeight) / 2 + offsetY;
 
-          // Draw the image with zoom applied, at the offset position
-          context.drawImage(originalImageBitmap, centerX, centerY, zoomedWidth, zoomedHeight);
-
-          setCanvasContext(context);
-        }
-      }
-    };
-
-    window.addEventListener('resize', updateCanvas);
-    updateCanvas();
-    return () => window.removeEventListener('resize', updateCanvas);
-  }, [
-    setCanvasContext,
-    originalImageBitmap,
-    canvasWidth,
-    canvasHeight,
-    zoomLevel,
-    baseScale,
-    offsetX,
-    offsetY,
-  ]);
+    context.drawImage(sourceCanvas, centerX, centerY, zoomedWidth, zoomedHeight);
+  }, [sourceCanvas, dimensions, zoomLevel, offsetX, offsetY]);
 
   const handleZoomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setZoomLevel(parseInt(e.target.value, 10));
@@ -160,10 +91,7 @@ const Canvas = ({ setCanvasContext, imageData }: CanvasProps) => {
       setDragStartX(mouseX - offsetX);
       setDragStartY(mouseY - offsetY);
 
-      // Set the cursor to grabbing
-      if (canvasRef.current) {
-        canvasRef.current.style.cursor = 'grabbing';
-      }
+      canvasRef.current.style.cursor = 'grabbing';
     }
   };
 
@@ -181,7 +109,6 @@ const Canvas = ({ setCanvasContext, imageData }: CanvasProps) => {
   const handleMouseUp = () => {
     setIsDragging(false);
 
-    // Reset cursor
     if (canvasRef.current) {
       canvasRef.current.style.cursor = 'grab';
     }
@@ -191,19 +118,11 @@ const Canvas = ({ setCanvasContext, imageData }: CanvasProps) => {
     if (isDragging) {
       setIsDragging(false);
 
-      // Reset cursor
       if (canvasRef.current) {
         canvasRef.current.style.cursor = 'grab';
       }
     }
   };
-
-  // Set initial grab cursor when component mounts
-  useEffect(() => {
-    if (canvasRef.current) {
-      canvasRef.current.style.cursor = 'grab';
-    }
-  }, []);
 
   return (
     <div className="canvas-container">
@@ -213,11 +132,12 @@ const Canvas = ({ setCanvasContext, imageData }: CanvasProps) => {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseLeave}
+        style={{ cursor: 'grab' }}
       />
       <div className="zoom-control">
         <input
           type="range"
-          min="0"
+          min="10"
           max="200"
           value={zoomLevel}
           onChange={handleZoomChange}

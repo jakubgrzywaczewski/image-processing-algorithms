@@ -1,4 +1,4 @@
-import React from 'react';
+import type { ChangeEvent } from 'react';
 
 import './ImageUploader.css';
 
@@ -7,7 +7,7 @@ type ImageUploaderProps = {
 };
 
 export const ImageUploader = ({ setImageData }: ImageUploaderProps) => {
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
